@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiche Transmission — Pôle Courtage | Solution Neuf</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0ebe3;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: white;
+      border-bottom: 1px solid #e0d8cc;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .logo { font-size: 18px; font-weight: 700; line-height: 1.2; }
+    .logo span { color: #C45C2E; }
+    .logo-sub { font-size: 12px; color: #888; margin-top: 2px; font-weight: 400; }
+    .badge-cnil {
+      background: #fff4f0;
+      border: 1.5px solid #C45C2E;
+      color: #C45C2E;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+
+    /* ── Tabs ── */
+    .progress-bar {
+      background: white;
+      border-bottom: 1px solid #e0d8cc;
+      overflow-x: auto;
+      scrollbar-width: none;
+      position: sticky;
+      top: 57px;
+      z-index: 100;
+    }
+    .progress-bar::-webkit-scrollbar { display: none; }
+    .tabs { display: flex; min-width: max-content; padding: 0 16px; }
+    .tab {
+      padding: 13px 18px;
+      font-size: 13px;
+      color: #aaa;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s;
+      user-select: none;
+    }
+    .tab.completed { color: #C45C2E; border-bottom-color: rgba(196,92,46,0.3); }
+    .tab.active { color: #C45C2E; border-bottom-color: #C45C2E; font-weight: 600; }
+
+    /* ── Container ── */
+    .container { max-width: 800px; margin: 0 auto; padding: 28px 16px; }
+    .step { display: none; }
+    .step.active { display: block; }
+    .step-label { font-size: 12px; color: #aaa; margin-bottom: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .step-title { font-size: 26px; font-weight: 700; margin-bottom: 5px; }
+    .step-desc { font-size: 14px; color: #777; margin-bottom: 20px; }
+
+    /* ── Cards ── */
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #C45C2E;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    /* ── Grid ── */
+    .fg { display: grid; gap: 14px; }
+    .fg-1 { grid-template-columns: 1fr; }
+    .fg-2 { grid-template-columns: 1fr 1fr; }
+    .fg-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .fg-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+    .mb { margin-bottom: 14px; }
+    @media (max-width: 640px) {
+      .fg-2, .fg-3, .fg-4 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 400px) {
+      .fg-2, .fg-3, .fg-4 { grid-template-columns: 1fr; }
+    }
+
+    /* ── Fields ── */
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    label { font-size: 12.5px; font-weight: 500; color: #555; }
+    label .req { color: #C45C2E; margin-left: 2px; }
+
+    input[type="text"], input[type="email"], input[type="tel"],
+    input[type="number"], input[type="date"], input[type="url"], select, textarea {
+      width: 100%;
+      padding: 9px 13px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      background: white;
+      color: #1a1a1a;
+      transition: border-color 0.15s;
+      outline: none;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #C45C2E; }
+    input::placeholder, textarea::placeholder { color: #bbb; }
+    input[type="number"] { -moz-appearance: textfield; }
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    /* ── Toggle buttons ── */
+    .tg { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tb {
+      padding: 7px 15px;
+      border: 1.5px solid #ccc;
+      border-radius: 20px;
+      background: white;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.12s;
+      color: #444;
+      font-family: inherit;
+    }
+    .tb:hover { border-color: #C45C2E; color: #C45C2E; }
+    .tb.sel { background: #C45C2E; border-color: #C45C2E; color: white; font-weight: 500; }
+
+    /* Oui / Non big */
+    .bg { display: flex; gap: 8px; }
+    .bb {
+      padding: 9px 24px;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      background: white;
+      font-size: 14px;
+      cursor: pointer;
+      color: #444;
+      transition: all 0.12s;
+      font-family: inherit;
+    }
+    .bb:hover { border-color: #C45C2E; }
+    .bb.sel { background: #C45C2E; border-color: #C45C2E; color: white; font-weight: 600; }
+
+    /* ── Loan rows ── */
+    .loan-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #faf8f5;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+    .loan-row > div { min-width: 90px; flex: 1; }
+    .ln { font-size: 11px; color: #999; margin-bottom: 4px; font-weight: 600; letter-spacing: 0.03em; }
+    .loan-row input, .loan-row select { font-size: 13px; padding: 7px 10px; }
+
+    /* ── Child rows ── */
+    .child-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 120px;
+      gap: 10px;
+      padding: 12px;
+      background: #faf8f5;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .child-row label { font-size: 11.5px; color: #888; }
+
+    /* ── Navigation ── */
+    .nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: white;
+      border-top: 1px solid #e5ddd4;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 200;
+    }
+    .nav-info { font-size: 13px; color: #bbb; }
+    .btn-prev {
+      padding: 11px 22px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      font-size: 14px;
+      cursor: pointer;
+      color: #555;
+      font-family: inherit;
+    }
+    .btn-prev:hover { border-color: #999; }
+    .btn-next {
+      padding: 11px 26px;
+      border: none;
+      border-radius: 8px;
+      background: #C45C2E;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: white;
+      font-family: inherit;
+      transition: background 0.12s;
+    }
+    .btn-next:hover { background: #a84d26; }
+    .btn-next:disabled { background: #ccc; cursor: default; }
+
+    /* ── Recap ── */
+    .recap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .ri .rk { font-size: 11px; color: #aaa; margin-bottom: 2px; }
+    .ri .rv { font-size: 13px; font-weight: 500; }
+
+    /* ── Webhook card ── */
+    .wh-card {
+      background: #fff8f5;
+      border: 1.5px solid #f0cfc0;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    .wh-card label { color: #C45C2E; font-weight: 700; font-size: 13px; }
+
+    /* ── Banners ── */
+    .success-banner {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 16px;
+      display: none;
+    }
+    .success-banner.show { display: block; }
+    .error-banner {
+      background: #fef2f2;
+      border: 1.5px solid #fca5a5;
+      border-radius: 10px;
+      padding: 14px;
+      color: #991b1b;
+      font-size: 13px;
+      margin-top: 14px;
+      display: none;
+    }
+    .error-banner.show { display: block; }
+
+    .divider { border: none; border-top: 1px solid #eee; margin: 18px 0; }
+    .hidden { display: none !important; }
+    .s-label { font-size: 11px; font-weight: 700; color: #C45C2E; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div class="header">
+  <div>
+    <div class="logo">Solution <span>Neuf</span></div>
+    <div class="logo-sub">Fiche transmission — Pôle courtage</div>
+  </div>
+  <div class="badge-cnil">CNIL · Confidentiel</div>
+</div>
+
+<!-- ═══ PROGRESS TABS ═══ -->
+<div class="progress-bar">
+  <div class="tabs">
+    <div class="tab active" data-step="1">Identité</div>
+    <div class="tab" data-step="2">Famille</div>
+    <div class="tab" data-step="3" id="tab-conjoint">Conjoint</div>
+    <div class="tab" data-step="4">Profession</div>
+    <div class="tab" data-step="5">Charges</div>
+    <div class="tab" data-step="6">Envoi</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════
+     STEP 1 — IDENTITÉ
+═══════════════════════════════════ -->
+<div class="step active" id="step-1">
+  <div class="step-label">Étape 1 sur 6</div>
+  <div class="step-title">Qui êtes-vous ?</div>
+  <div class="step-desc">Informations personnelles de l'interlocuteur n°1</div>
+
+  <div class="card">
+    <div class="card-title">Situation de vie</div>
+    <div class="field">
+      <label>Vivez-vous seul(e) ?<span class="req">*</span></label>
+      <div class="bg">
+        <button class="bb" data-group="seul" data-val="oui" onclick="pick(this,'seul'); onSeulChange()">Oui, je vis seul(e)</button>
+        <button class="bb" data-group="seul" data-val="non" onclick="pick(this,'seul'); onSeulChange()">Non, j'ai un partenaire</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Interlocuteur n°1 — Vous</div>
+    <div class="fg fg-3 mb">
+      <div class="field"><label>Nom d'usage<span class="req">*</span></label><input type="text" id="i1_nom_usage" placeholder="DUPONT"></div>
+      <div class="field"><label>Nom de naissance<span class="req">*</span></label><input type="text" id="i1_nom_naissance" placeholder="DUPONT"></div>
+      <div class="field"><label>Prénom<span class="req">*</span></label><input type="text" id="i1_prenom" placeholder="Jean"></div>
+    </div>
+    <div class="fg fg-3 mb">
+      <div class="field"><label>Date de naissance<span class="req">*</span></label><input type="date" id="i1_ddn"></div>
+      <div class="field"><label>Ville de naissance</label><input type="text" id="i1_ville_naissance" placeholder="Paris"></div>
+      <div class="field"><label>Pays de naissance</label><input type="text" id="i1_pays_naissance" placeholder="France" value="France"></div>
+    </div>
+    <div class="fg fg-3 mb">
+      <div class="field"><label>Nationalité</label><input type="text" id="i1_nationalite" placeholder="Française" value="Française"></div>
+      <div class="field"><label>E-mail<span class="req">*</span></label><input type="email" id="i1_email" placeholder="jean@email.com"></div>
+      <div class="field"><label>Sexe</label>
+        <select id="i1_sexe"><option value="">—</option><option value="M">Masculin</option><option value="F">Féminin</option><option value="autre">Autre</option></select>
+      </div>
+    </div>
+    <div class="fg fg-2 mb">
+      <div class="field"><label>Tél. personnel</label><input type="tel" id="i1_tel_perso" placeholder="06 00 00 00 00"></div>
+      <div class="field"><label>Tél. professionnel</label><input type="tel" id="i1_tel_pro" placeholder="01 00 00 00 00"></div>
+    </div>
+    <div class="fg fg-3 mb">
+      <div class="field"><label>Taille (cm)</label><input type="number" id="i1_taille" placeholder="175" min="100" max="250"></div>
+      <div class="field"><label>Poids (kg)</label><input type="number" id="i1_poids" placeholder="75" min="30" max="300"></div>
+      <div class="field"><label>Fumeur ?</label>
+        <div class="bg"><button class="bb" data-group="i1_fumeur" data-val="oui" onclick="pick(this,'i1_fumeur')">Oui</button><button class="bb" data-group="i1_fumeur" data-val="non" onclick="pick(this,'i1_fumeur')">Non</button></div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Situation de handicap</label>
+      <div class="bg"><button class="bb" data-group="i1_handicap" data-val="non" onclick="pick(this,'i1_handicap')">Non</button><button class="bb" data-group="i1_handicap" data-val="oui" onclick="pick(this,'i1_handicap')">Oui</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     STEP 2 — FAMILLE
+═══════════════════════════════════ -->
+<div class="step" id="step-2">
+  <div class="step-label">Étape 2 sur 6</div>
+  <div class="step-title">Situation familiale</div>
+  <div class="step-desc">Statut matrimonial, enfants et adresse</div>
+
+  <div class="card">
+    <div class="card-title">Statut matrimonial</div>
+    <div class="tg">
+      <button class="tb" data-group="matrimonial" data-val="celibataire" onclick="pick(this,'matrimonial')">Célibataire</button>
+      <button class="tb" data-group="matrimonial" data-val="union_libre" onclick="pick(this,'matrimonial')">Union libre</button>
+      <button class="tb" data-group="matrimonial" data-val="veuf" onclick="pick(this,'matrimonial')">Veuf(ve)</button>
+      <button class="tb" data-group="matrimonial" data-val="divorce" onclick="pick(this,'matrimonial')">Divorcé(e)</button>
+      <button class="tb" data-group="matrimonial" data-val="separe" onclick="pick(this,'matrimonial')">Séparé(e)</button>
+      <button class="tb" data-group="matrimonial" data-val="instance_divorce" onclick="pick(this,'matrimonial')">En instance de divorce</button>
+      <button class="tb" data-group="matrimonial" data-val="pacs_separation" onclick="pick(this,'matrimonial')">Pacsés (séparation)</button>
+      <button class="tb" data-group="matrimonial" data-val="pacs_indivision" onclick="pick(this,'matrimonial')">Pacsés (indivision)</button>
+      <button class="tb" data-group="matrimonial" data-val="maries_cra" onclick="pick(this,'matrimonial')">Mariés — CRA</button>
+      <button class="tb" data-group="matrimonial" data-val="maries_universelle" onclick="pick(this,'matrimonial')">Mariés — Communauté universelle</button>
+      <button class="tb" data-group="matrimonial" data-val="maries_separation" onclick="pick(this,'matrimonial')">Mariés — Séparation de biens</button>
+      <button class="tb" data-group="matrimonial" data-val="maries_participation" onclick="pick(this,'matrimonial')">Mariés — Participation aux acquêts</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Donation au Dernier Vivant (DDV)</div>
+    <div class="field mb">
+      <label>Avez-vous réalisé une DDV ?</label>
+      <div class="bg">
+        <button class="bb" data-group="ddv" data-val="oui" onclick="pick(this,'ddv'); toggle('ddv-details', 'ddv', 'oui')">Oui, réalisée</button>
+        <button class="bb" data-group="ddv" data-val="non" onclick="pick(this,'ddv'); toggle('ddv-details', 'ddv', 'oui')">Non</button>
+      </div>
+    </div>
+    <div id="ddv-details" class="hidden fg fg-2">
+      <div class="field"><label>Date de l'évènement</label><input type="date" id="ddv_date"></div>
+      <div class="field"><label>Lieu de l'évènement</label><input type="text" id="ddv_lieu" placeholder="Ville"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Adresse de résidence principale</div>
+    <div class="fg fg-2 mb">
+      <div class="field"><label>Adresse</label><input type="text" id="adresse_rue" placeholder="12 rue de la Paix"></div>
+      <div class="field"><label>Code postal</label><input type="text" id="adresse_cp" placeholder="75001"></div>
+    </div>
+    <div class="fg fg-2">
+      <div class="field"><label>Ville</label><input type="text" id="adresse_ville" placeholder="Paris"></div>
+      <div class="field"><label>Pays</label><input type="text" id="adresse_pays" placeholder="France" value="France"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Enfants</div>
+    <div class="field mb">
+      <label>Avez-vous des enfants ?</label>
+      <div class="bg">
+        <button class="bb" data-group="has_enfants" data-val="oui" onclick="pick(this,'has_enfants'); toggle('enfants-details','has_enfants','oui')">Oui</button>
+        <button class="bb" data-group="has_enfants" data-val="non" onclick="pick(this,'has_enfants'); toggle('enfants-details','has_enfants','oui')">Non</button>
+      </div>
+    </div>
+    <div id="enfants-details" class="hidden">
+      <div class="fg fg-2 mb">
+        <div class="field"><label>Nombre d'enfants</label><input type="number" id="nb_enfants" placeholder="2" min="0" max="20" oninput="buildChildRows()"></div>
+        <div class="field"><label>Dont enfants à charge</label><input type="number" id="nb_enfants_charge" placeholder="2" min="0" max="20"></div>
+      </div>
+      <div class="field mb">
+        <label>Type d'union</label>
+        <div class="tg">
+          <button class="tb" data-group="union_enfants" data-val="meme" onclick="pick(this,'union_enfants')">D'une même union</button>
+          <button class="tb" data-group="union_enfants" data-val="differentes" onclick="pick(this,'union_enfants')">D'union(s) différente(s)</button>
+        </div>
+      </div>
+      <div id="children-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     STEP 3 — CONJOINT
+═══════════════════════════════════ -->
+<div class="step" id="step-3">
+  <div class="step-label">Étape 3 sur 6</div>
+  <div class="step-title">Conjoint / Partenaire</div>
+  <div class="step-desc">Interlocuteur n°2</div>
+
+  <div class="card">
+    <div class="card-title">Interlocuteur n°2</div>
+    <div class="fg fg-3 mb">
+      <div class="field"><label>Nom<span class="req">*</span></label><input type="text" id="i2_nom_usage" placeholder="MARTIN"></div>
+      <div class="field"><label>Nom de naissance</label><input type="text" id="i2_nom_naissance" placeholder="MARTIN"></div>
+      <div class="field"><label>Prénom<span class="req">*</span></label><input type="text" id="i2_prenom" placeholder="Marie"></div>
+    </div>
+    <div class="fg fg-3 mb">
+      <div class="field"><label>Date de naissance<span class="req">*</span></label><input type="date" id="i2_ddn"></div>
+      <div class="field"><label>Ville de naissance</label><input type="text" id="i2_ville_naissance" placeholder="Lyon"></div>
+      <div class="field"><label>Pays de naissance</label><input type="text" id="i2_pays_naissance" placeholder="France" value="France"></div>
+    </div>
+    <div class="fg fg-3 mb">
+      <div class="field"><label>Nationalité</label><input type="text" id="i2_nationalite" placeholder="Française" value="Française"></div>
+      <div class="field"><label>E-mail<span class="req">*</span></label><input type="email" id="i2_email" placeholder="marie@email.com"></div>
+      <div class="field"><label>Sexe</label>
+        <select id="i2_sexe"><option value="">—</option><option value="M">Masculin</option><option value="F">Féminin</option><option value="autre">Autre</option></select>
+      </div>
+    </div>
+    <div class="fg fg-2 mb">
+      <div class="field"><label>Tél. personnel</label><input type="tel" id="i2_tel_perso" placeholder="06 00 00 00 00"></div>
+      <div class="field"><label>Tél. professionnel</label><input type="tel" id="i2_tel_pro" placeholder="01 00 00 00 00"></div>
+    </div>
+    <div class="fg fg-3">
+      <div class="field"><label>Taille (cm)</label><input type="number" id="i2_taille" placeholder="165" min="100" max="250"></div>
+      <div class="field"><label>Poids (kg)</label><input type="number" id="i2_poids" placeholder="60" min="30" max="300"></div>
+      <div class="field"><label>Fumeur ?</label>
+        <div class="bg"><button class="bb" data-group="i2_fumeur" data-val="oui" onclick="pick(this,'i2_fumeur')">Oui</button><button class="bb" data-group="i2_fumeur" data-val="non" onclick="pick(this,'i2_fumeur')">Non</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     STEP 4 — PROFESSION
+═══════════════════════════════════ -->
+<div class="step" id="step-4">
+  <div class="step-label">Étape 4 sur 6</div>
+  <div class="step-title">Situation professionnelle</div>
+  <div class="step-desc">Statuts, revenus et autres ressources</div>
+
+  <!-- Int.1 -->
+  <div class="card">
+    <div class="card-title">Interlocuteur n°1 — Vous</div>
+    <div class="fg fg-3 mb">
+      <div class="field"><label>Profession exercée</label><input type="text" id="i1_profession" placeholder="Ingénieur, Médecin..."></div>
+      <div class="field"><label>Employeur</label><input type="text" id="i1_employeur" placeholder="Nom de l'entreprise"></div>
+      <div class="field"><label>Ville de travail</label><input type="text" id="i1_ville_travail" placeholder="Paris"></div>
+    </div>
+    <div class="fg fg-3 mb">
+      <div class="field"><label>Code postal (travail)</label><input type="text" id="i1_cp_travail" placeholder="75001"></div>
+      <div class="field"><label>Pays de travail</label><input type="text" id="i1_pays_travail" placeholder="France" value="France"></div>
+      <div class="field"><label>Expatrié(e) employeur FR ?</label>
+        <div class="bg"><button class="bb" data-group="i1_expatrie" data-val="oui" onclick="pick(this,'i1_expatrie')">Oui</button><button class="bb" data-group="i1_expatrie" data-val="non" onclick="pick(this,'i1_expatrie')">Non</button></div>
+      </div>
+    </div>
+    <div class="fg fg-2 mb">
+      <div class="field"><label>Date d'entrée entreprise</label><input type="date" id="i1_date_entree"></div>
+      <div class="field"><label>Ancienneté dans l'activité</label>
+        <select id="i1_anciennete"><option value="">—</option><option value="moins_1an">Moins d'1 an</option><option value="1_3ans">Entre 1 et 3 ans</option><option value="plus_3ans">Plus de 3 ans</option></select>
+      </div>
+    </div>
+    <div class="field mb">
+      <label>Statut professionnel<span class="req">*</span></label>
+      <div class="tg">
+        <button class="tb" data-group="i1_statut" data-val="salarie_cadre_cdi" onclick="pick(this,'i1_statut')">Salarié cadre CDI (essai validé)</button>
+        <button class="tb" data-group="i1_statut" data-val="salarie_noncadre_cdi" onclick="pick(this,'i1_statut')">Salarié non-cadre CDI (essai validé)</button>
+        <button class="tb" data-group="i1_statut" data-val="salarie_cdi_essai" onclick="pick(this,'i1_statut')">Salarié CDI (période d'essai)</button>
+        <button class="tb" data-group="i1_statut" data-val="salarie_cdd" onclick="pick(this,'i1_statut')">Salarié CDD</button>
+        <button class="tb" data-group="i1_statut" data-val="chef_entreprise" onclick="pick(this,'i1_statut')">Chef d'entreprise</button>
+        <button class="tb" data-group="i1_statut" data-val="liberal" onclick="pick(this,'i1_statut')">Libéral / Auto-entrepreneur</button>
+        <button class="tb" data-group="i1_statut" data-val="interimaire" onclick="pick(this,'i1_statut')">Intérimaire</button>
+        <button class="tb" data-group="i1_statut" data-val="intermittent" onclick="pick(this,'i1_statut')">Intermittent du spectacle</button>
+        <button class="tb" data-group="i1_statut" data-val="fonctionnaire" onclick="pick(this,'i1_statut')">Fonctionnaire</button>
+        <button class="tb" data-group="i1_statut" data-val="retraite" onclick="pick(this,'i1_statut')">Retraité(e)</button>
+        <button class="tb" data-group="i1_statut" data-val="sans_emploi_recherche" onclick="pick(this,'i1_statut')">Sans emploi — en recherche</button>
+        <button class="tb" data-group="i1_statut" data-val="sans_emploi_foyer" onclick="pick(this,'i1_statut')">Sans emploi — au foyer</button>
+        <button class="tb" data-group="i1_statut" data-val="autre" onclick="pick(this,'i1_statut')">Autre</button>
+      </div>
+    </div>
+    <div class="fg fg-2 mb">
+      <div class="field"><label>Revenus mensuels nets (€)</label><input type="number" id="i1_rev_mensuel" placeholder="3 500" min="0"></div>
+      <div class="field"><label>ou Revenus annuels nets (€)</label><input type="number" id="i1_rev_annuel" placeholder="42 000" min="0"></div>
+    </div>
+    <div class="fg fg-2 mb">
+      <div class="field"><label>Primes annuelles (€/an)</label><input type="number" id="i1_primes" placeholder="0" min="0" value="0"></div>
+      <div class="field"><label>Intéressement / participation (€/an)</label><input type="number" id="i1_interessement" placeholder="0" min="0" value="0"></div>
+    </div>
+    <hr class="divider">
+    <div class="s-label">Autres ressources (Int.1)</div>
+    <div class="fg fg-4 mb">
+      <div class="field"><label>BNC (€/mois)</label><input type="number" id="i1_bnc" placeholder="0" min="0" value="0"></div>
+      <div class="field"><label>BIC Réel</label><input type="number" id="i1_bic_reel" placeholder="0" min="0" value="0"></div>
+      <div class="field"><label>BIC Micro</label><input type="number" id="i1_bic_micro" placeholder="0" min="0" value="0"></div>
+      <div class="field"><label>BA</label><input type="number" id="i1_ba" placeholder="0" min="0" value="0"></div>
+    </div>
+    <div class="fg fg-4">
+      <div class="field">
+        <label>Rev. fonciers — type</label>
+        <div class="tg" style="margin-bottom:5px">
+          <button class="tb" style="font-size:11px;padding:4px 10px" data-group="i1_foncier_type" data-val="microfoncier" onclick="pick(this,'i1_foncier_type')">Microfoncier</button>
+          <button class="tb" style="font-size:11px;padding:4px 10px" data-group="i1_foncier_type" data-val="reel" onclick="pick(this,'i1_foncier_type')">Réel</button>
+        </div>
+        <input type="number" id="i1_foncier" placeholder="0" min="0" value="0">
+      </div>
+      <div class="field"><label>Revenus mobiliers</label><input type="number" id="i1_mobilier" placeholder="0" min="0" value="0"></div>
+      <div class="field"><label>Allocations fam.</label><input type="number" id="i1_alloc_fam" placeholder="0" min="0" value="0"></div>
+      <div class="field"><label>Autres ressources</label><input type="number" id="i1_autres_res" placeholder="0" min="0" value="0"></div>
+    </div>
+    <div class="field" style="margin-top:14px">
+      <label>Informations complémentaires sur vos revenus</label>
+      <textarea id="i1_rev_notes" rows="2" placeholder="Précisions éventuelles..."></textarea>
+    </div>
+  </div>
+
+  <!-- Int.2 -->
+  <div class="card" id="card-i2-prof">
+    <div class="card-title">Interlocuteur n°2 — Conjoint / Partenaire</div>
+    <div class="fg fg-3 mb">
+      <div class="field"><label>Profession</label><input type="text" id="i2_profession" placeholder="Profession..."></div>
+      <div class="field"><label>Employeur</label><input type="text" id="i2_employeur" placeholder="Entreprise"></div>
+      <div class="field"><label>Ville de travail</label><input type="text" id="i2_ville_travail" placeholder="Paris"></div>
+    </div>
+    <div class="fg fg-2 mb">
+      <div class="field"><label>Date d'entrée entreprise</label><input type="date" id="i2_date_entree"></div>
+      <div class="field"><label>Ancienneté</label>
+        <select id="i2_anciennete"><option value="">—</option><option value="moins_1an">Moins d'1 an</option><option value="1_3ans">Entre 1 et 3 ans</option><option value="plus_3ans">Plus de 3 ans</option></select>
+      </div>
+    </div>
+    <div class="field mb">
+      <label>Statut professionnel</label>
+      <div class="tg">
+        <button class="tb" data-group="i2_statut" data-val="salarie_cadre_cdi" onclick="pick(this,'i2_statut')">Salarié cadre CDI</button>
+        <button class="tb" data-group="i2_statut" data-val="salarie_noncadre_cdi" onclick="pick(this,'i2_statut')">Salarié non-cadre CDI</button>
+        <button class="tb" data-group="i2_statut" data-val="chef_entreprise" onclick="pick(this,'i2_statut')">Chef d'entreprise</button>
+        <button class="tb" data-group="i2_statut" data-val="liberal" onclick="pick(this,'i2_statut')">Libéral / Auto-entrepreneur</button>
+        <button class="tb" data-group="i2_statut" data-val="fonctionnaire" onclick="pick(this,'i2_statut')">Fonctionnaire</button>
+        <button class="tb" data-group="i2_statut" data-val="retraite" onclick="pick(this,'i2_statut')">Retraité(e)</button>
+        <button class="tb" data-group="i2_statut" data-val="sans_emploi" onclick="pick(this,'i2_statut')">Sans emploi</button>
+      </div>
+    </div>
+    <div class="fg fg-2 mb">
+      <div class="field"><label>Revenus mensuels nets (€)</label><input type="number" id="i2_rev_mensuel" placeholder="2 500" min="0"></div>
+      <div class="field"><label>ou Revenus annuels nets (€)</label><input type="number" id="i2_rev_annuel" placeholder="30 000" min="0"></div>
+    </div>
+    <div class="fg fg-3">
+      <div class="field"><label>Primes annuelles (€/an)</label><input type="number" id="i2_primes" placeholder="0" min="0" value="0"></div>
+      <div class="field"><label>BNC / Rev. fonciers (€/mois)</label><input type="number" id="i2_bnc_foncier" placeholder="0" min="0" value="0"></div>
+      <div class="field"><label>Autres ressources (€/mois)</label><input type="number" id="i2_autres" placeholder="0" min="0" value="0"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     STEP 5 — CHARGES
+═══════════════════════════════════ -->
+<div class="step" id="step-5">
+  <div class="step-label">Étape 5 sur 6</div>
+  <div class="step-title">Vos charges</div>
+  <div class="step-desc">Résidence, fiscalité, prêts et autres charges</div>
+
+  <div class="card">
+    <div class="card-title">Résidence principale actuelle</div>
+    <div class="field mb">
+      <label>Statut d'occupation</label>
+      <div class="tg">
+        <button class="tb" data-group="residence" data-val="locataire" onclick="pick(this,'residence'); toggle('bloc-loyer','residence','locataire')">Locataire</button>
+        <button class="tb" data-group="residence" data-val="proprio_accession" onclick="pick(this,'residence'); toggle('bloc-loyer','residence','locataire')">Propriétaire (accession)</button>
+        <button class="tb" data-group="residence" data-val="proprio_libre" onclick="pick(this,'residence'); toggle('bloc-loyer','residence','locataire')">Propriétaire (sans encours)</button>
+        <button class="tb" data-group="residence" data-val="gratuit" onclick="pick(this,'residence'); toggle('bloc-loyer','residence','locataire')">Logé à titre gratuit</button>
+        <button class="tb" data-group="residence" data-val="employeur" onclick="pick(this,'residence'); toggle('bloc-loyer','residence','locataire')">Logé par employeur</button>
+      </div>
+    </div>
+    <div id="bloc-loyer" class="hidden fg fg-2">
+      <div class="field"><label>Loyer mensuel (€)</label><input type="number" id="loyer_mensuel" placeholder="900" min="0"></div>
+      <div class="field"><label>Locataire depuis</label><input type="date" id="locataire_depuis"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Fiscalité</div>
+    <div class="field mb">
+      <label>Type de déclaration fiscale</label>
+      <div class="tg">
+        <button class="tb" data-group="decl_type" data-val="commune" onclick="pick(this,'decl_type'); toggleFiscal()">Déclaration commune</button>
+        <button class="tb" data-group="decl_type" data-val="separee" onclick="pick(this,'decl_type'); toggleFiscal()">Déclaration séparée (indivision, non marié)</button>
+      </div>
+    </div>
+    <div id="fiscal-commune" class="hidden">
+      <div class="field"><label>Montant de l'impôt commun (€/an)</label><input type="number" id="impot_commun" placeholder="2 000" min="0"></div>
+    </div>
+    <div id="fiscal-separee" class="hidden fg fg-2">
+      <div class="field"><label>Impôt Int.1 (€/an)</label><input type="number" id="impot_i1" placeholder="1 500" min="0"></div>
+      <div class="field"><label>Impôt Int.2 (€/an)</label><input type="number" id="impot_i2" placeholder="800" min="0"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Prêt(s) Immobiliers</div>
+    <!-- Prêt immo 1 -->
+    <div class="loan-row">
+      <div><div class="ln">Taux (%)</div><input type="number" step="0.01" id="immo_taux_1" placeholder="1.5"></div>
+      <div><div class="ln">Mensualité (€)</div><input type="number" id="immo_mens_1" placeholder="800"></div>
+      <div><div class="ln">Capital Restant Dû (€)</div><input type="number" id="immo_crd_1" placeholder="120 000"></div>
+      <div><div class="ln">Montant initial (€)</div><input type="number" id="immo_montant_1" placeholder="200 000"></div>
+      <div><div class="ln">Durée (ans)</div><input type="number" id="immo_duree_1" placeholder="20" max="40"></div>
+      <div><div class="ln">Banque</div><input type="text" id="immo_banque_1" placeholder="BNP"></div>
+      <div><div class="ln">Usage du bien</div><select id="immo_usage_1"><option value="">—</option><option value="rp">Rés. principale</option><option value="rs">Rés. secondaire</option><option value="locatif">Locatif</option></select></div>
+      <div><div class="ln">Ville associée</div><input type="text" id="immo_ville_1" placeholder="Paris"></div>
+      <div><div class="ln">Date de fin</div><input type="date" id="immo_fin_1"></div>
+    </div>
+    <!-- Prêt immo 2 -->
+    <div class="loan-row">
+      <div><div class="ln">Taux (%)</div><input type="number" step="0.01" id="immo_taux_2" placeholder="—"></div>
+      <div><div class="ln">Mensualité (€)</div><input type="number" id="immo_mens_2" placeholder="—"></div>
+      <div><div class="ln">Capital Restant Dû</div><input type="number" id="immo_crd_2" placeholder="—"></div>
+      <div><div class="ln">Montant initial</div><input type="number" id="immo_montant_2" placeholder="—"></div>
+      <div><div class="ln">Durée (ans)</div><input type="number" id="immo_duree_2" placeholder="—"></div>
+      <div><div class="ln">Banque</div><input type="text" id="immo_banque_2" placeholder="—"></div>
+      <div><div class="ln">Usage</div><select id="immo_usage_2"><option value="">—</option><option value="rp">Rés. principale</option><option value="rs">Rés. secondaire</option><option value="locatif">Locatif</option></select></div>
+      <div><div class="ln">Ville</div><input type="text" id="immo_ville_2" placeholder="—"></div>
+      <div><div class="ln">Date fin</div><input type="date" id="immo_fin_2"></div>
+    </div>
+    <!-- Prêt immo 3 -->
+    <div class="loan-row">
+      <div><div class="ln">Taux (%)</div><input type="number" step="0.01" id="immo_taux_3" placeholder="—"></div>
+      <div><div class="ln">Mensualité (€)</div><input type="number" id="immo_mens_3" placeholder="—"></div>
+      <div><div class="ln">Capital Restant Dû</div><input type="number" id="immo_crd_3" placeholder="—"></div>
+      <div><div class="ln">Montant initial</div><input type="number" id="immo_montant_3" placeholder="—"></div>
+      <div><div class="ln">Durée (ans)</div><input type="number" id="immo_duree_3" placeholder="—"></div>
+      <div><div class="ln">Banque</div><input type="text" id="immo_banque_3" placeholder="—"></div>
+      <div><div class="ln">Usage</div><select id="immo_usage_3"><option value="">—</option><option value="rp">Rés. principale</option><option value="rs">Rés. secondaire</option><option value="locatif">Locatif</option></select></div>
+      <div><div class="ln">Ville</div><input type="text" id="immo_ville_3" placeholder="—"></div>
+      <div><div class="ln">Date fin</div><input type="date" id="immo_fin_3"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Autre(s) charges — Prêts conso, pension alimentaire, autres</div>
+    <!-- Conso 1 -->
+    <div class="loan-row">
+      <div><div class="ln">Taux (%)</div><input type="number" step="0.01" id="conso_taux_1" placeholder="—"></div>
+      <div><div class="ln">Mensualité (€)</div><input type="number" id="conso_mens_1" placeholder="—"></div>
+      <div><div class="ln">Capital Restant Dû</div><input type="number" id="conso_crd_1" placeholder="—"></div>
+      <div><div class="ln">Montant initial</div><input type="number" id="conso_montant_1" placeholder="—"></div>
+      <div><div class="ln">Durée (ans)</div><input type="number" id="conso_duree_1" placeholder="—"></div>
+      <div><div class="ln">Banque</div><input type="text" id="conso_banque_1" placeholder="—"></div>
+      <div><div class="ln">Objet</div><input type="text" id="conso_objet_1" placeholder="voiture, pension..."></div>
+      <div><div class="ln">Date de fin</div><input type="date" id="conso_fin_1"></div>
+    </div>
+    <!-- Conso 2 -->
+    <div class="loan-row">
+      <div><div class="ln">Taux (%)</div><input type="number" step="0.01" id="conso_taux_2" placeholder="—"></div>
+      <div><div class="ln">Mensualité (€)</div><input type="number" id="conso_mens_2" placeholder="—"></div>
+      <div><div class="ln">Capital Restant Dû</div><input type="number" id="conso_crd_2" placeholder="—"></div>
+      <div><div class="ln">Montant initial</div><input type="number" id="conso_montant_2" placeholder="—"></div>
+      <div><div class="ln">Durée (ans)</div><input type="number" id="conso_duree_2" placeholder="—"></div>
+      <div><div class="ln">Banque</div><input type="text" id="conso_banque_2" placeholder="—"></div>
+      <div><div class="ln">Objet</div><input type="text" id="conso_objet_2" placeholder="—"></div>
+      <div><div class="ln">Date fin</div><input type="date" id="conso_fin_2"></div>
+    </div>
+    <!-- Conso 3 -->
+    <div class="loan-row">
+      <div><div class="ln">Taux (%)</div><input type="number" step="0.01" id="conso_taux_3" placeholder="—"></div>
+      <div><div class="ln">Mensualité (€)</div><input type="number" id="conso_mens_3" placeholder="—"></div>
+      <div><div class="ln">Capital Restant Dû</div><input type="number" id="conso_crd_3" placeholder="—"></div>
+      <div><div class="ln">Montant initial</div><input type="number" id="conso_montant_3" placeholder="—"></div>
+      <div><div class="ln">Durée (ans)</div><input type="number" id="conso_duree_3" placeholder="—"></div>
+      <div><div class="ln">Banque</div><input type="text" id="conso_banque_3" placeholder="—"></div>
+      <div><div class="ln">Objet</div><input type="text" id="conso_objet_3" placeholder="—"></div>
+      <div><div class="ln">Date fin</div><input type="date" id="conso_fin_3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     STEP 6 — ENVOI / RÉCAP
+═══════════════════════════════════ -->
+<div class="step" id="step-6">
+  <div class="step-label">Étape 6 sur 6</div>
+  <div class="step-title">Récapitulatif &amp; Envoi</div>
+  <div class="step-desc">Vérifiez vos informations avant d'envoyer</div>
+
+  <div class="wh-card">
+    <div class="field">
+      <label>URL du Webhook N8N</label>
+      <input type="url" id="webhook_url" placeholder="https://n8n.exemple.com/webhook/xxxx" style="margin-top:8px">
+      <div style="font-size:11.5px;color:#bbb;margin-top:5px">L'URL est mémorisée dans votre navigateur.</div>
+    </div>
+  </div>
+
+  <!-- Recap -->
+  <div class="card">
+    <div class="s-label">Identité — Int.1</div>
+    <div class="recap-grid" id="rc-i1"></div>
+  </div>
+  <div class="card">
+    <div class="s-label">Situation familiale</div>
+    <div class="recap-grid" id="rc-famille"></div>
+  </div>
+  <div class="card" id="rc-i2-card">
+    <div class="s-label">Conjoint / Partenaire</div>
+    <div class="recap-grid" id="rc-i2"></div>
+  </div>
+  <div class="card">
+    <div class="s-label">Situation professionnelle</div>
+    <div class="recap-grid" id="rc-profession"></div>
+  </div>
+  <div class="card">
+    <div class="s-label">Charges</div>
+    <div class="recap-grid" id="rc-charges"></div>
+  </div>
+
+  <button id="btn-submit" style="width:100%;padding:15px;font-size:16px;border-radius:10px;border:none;background:#C45C2E;color:white;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px" onclick="submitForm()">
+    Envoyer vers N8N →
+  </button>
+
+  <div class="success-banner" id="success-banner">
+    <div style="font-size:28px">✓</div>
+    <div style="font-weight:700;font-size:17px;margin-top:6px">Fiche envoyée avec succès !</div>
+    <div style="color:#555;font-size:13px;margin-top:4px">Les données ont été transmises à votre workflow N8N.</div>
+  </div>
+  <div class="error-banner" id="error-banner"></div>
+</div>
+
+</div><!-- /container -->
+
+<!-- ═══ NAV ═══ -->
+<div class="nav">
+  <button class="btn-prev" id="btn-prev" onclick="prevStep()" style="visibility:hidden">← Précédent</button>
+  <span class="nav-info" id="nav-info">Étape 1 sur 6</span>
+  <button class="btn-next" id="btn-next" onclick="nextStep()">Suivant →</button>
+</div>
+
+<script>
+// ══════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════
+const S = {}; // boolState: group => val
+let currentStep = 1;
+
+function getSteps() {
+  return S.seul === 'oui' ? [1, 2, 4, 5, 6] : [1, 2, 3, 4, 5, 6];
+}
+
+function curIdx() { return getSteps().indexOf(currentStep); }
+function totalVisible() { return getSteps().length; }
+
+// ══════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('sn_webhook');
+  if (saved) document.getElementById('webhook_url').value = saved;
+  document.getElementById('webhook_url').addEventListener('input', e =>
+    localStorage.setItem('sn_webhook', e.target.value));
+  renderNav();
+  renderTabs();
+});
+
+// ══════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════
+function goTo(n) {
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  currentStep = n;
+  document.getElementById('step-' + n).classList.add('active');
+  renderNav();
+  renderTabs();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (n === 6) buildRecap();
+}
+
+function nextStep() {
+  const steps = getSteps();
+  const i = curIdx();
+  if (i < steps.length - 1) goTo(steps[i + 1]);
+}
+
+function prevStep() {
+  const steps = getSteps();
+  const i = curIdx();
+  if (i > 0) goTo(steps[i - 1]);
+}
+
+function renderNav() {
+  const idx = curIdx();
+  const total = totalVisible();
+  const displayNum = idx + 1;
+
+  document.getElementById('nav-info').textContent = 'Étape ' + displayNum + ' sur ' + total;
+  document.getElementById('btn-prev').style.visibility = idx === 0 ? 'hidden' : 'visible';
+
+  const btnNext = document.getElementById('btn-next');
+  if (idx === total - 1) {
+    btnNext.style.display = 'none';
+  } else {
+    btnNext.style.display = '';
+    btnNext.textContent = 'Suivant →';
+  }
+
+  // Update step labels
+  document.querySelectorAll('.step-label').forEach(el => {
+    const step = el.closest('.step');
+    if (step && step.id === 'step-' + currentStep) {
+      el.textContent = 'Étape ' + displayNum + ' sur ' + total;
+    }
+  });
+
+  // I2 prof card
+  const c = document.getElementById('card-i2-prof');
+  if (c) c.style.display = S.seul === 'oui' ? 'none' : '';
+
+  // Recap i2 card
+  const rc = document.getElementById('rc-i2-card');
+  if (rc) rc.style.display = S.seul === 'oui' ? 'none' : '';
+}
+
+function renderTabs() {
+  const steps = getSteps();
+  const idx = curIdx();
+  document.querySelectorAll('.tab').forEach(tab => {
+    const ts = parseInt(tab.dataset.step);
+    const ti = steps.indexOf(ts);
+    tab.classList.remove('active', 'completed');
+    if (ts === 3) tab.style.display = S.seul === 'oui' ? 'none' : '';
+    if (ts === currentStep) tab.classList.add('active');
+    else if (ti !== -1 && ti < idx) tab.classList.add('completed');
+  });
+}
+
+function onSeulChange() {
+  renderNav();
+  renderTabs();
+}
+
+// ══════════════════════════════════════
+//  TOGGLES
+// ══════════════════════════════════════
+function pick(btn, group) {
+  document.querySelectorAll('[data-group="' + group + '"]').forEach(b => {
+    b.classList.remove('sel');
+  });
+  btn.classList.add('sel');
+  S[group] = btn.dataset.val;
+}
+
+function toggle(id, group, triggerVal) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('hidden', S[group] !== triggerVal);
+}
+
+function toggleFiscal() {
+  document.getElementById('fiscal-commune').classList.toggle('hidden', S.decl_type !== 'commune');
+  document.getElementById('fiscal-separee').classList.toggle('hidden', S.decl_type !== 'separee');
+}
+
+// ══════════════════════════════════════
+//  CHILDREN
+// ══════════════════════════════════════
+function buildChildRows() {
+  const nb = Math.min(parseInt(document.getElementById('nb_enfants').value) || 0, 12);
+  const c = document.getElementById('children-list');
+  c.innerHTML = '';
+  for (let i = 1; i <= nb; i++) {
+    const d = document.createElement('div');
+    d.className = 'child-row';
+    d.innerHTML = `
+      <div class="field"><label>Prénom enfant ${i}</label><input type="text" id="child_prenom_${i}" placeholder="Prénom"></div>
+      <div class="field"><label>Date de naissance</label><input type="date" id="child_ddn_${i}"></div>
+      <div class="field"><label>Sexe</label><select id="child_sexe_${i}"><option value="">—</option><option value="M">M</option><option value="F">F</option></select></div>
+    `;
+    c.appendChild(d);
+  }
+}
+
+// ══════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════
+function v(id) {
+  const el = document.getElementById(id);
+  return el ? (el.value || null) : null;
+}
+
+function ri(key, val) {
+  return '<div class="ri"><div class="rk">' + key + '</div><div class="rv">' + (val || '—') + '</div></div>';
+}
+
+// ══════════════════════════════════════
+//  RECAP
+// ══════════════════════════════════════
+function buildRecap() {
+  document.getElementById('rc-i1').innerHTML = [
+    ri('Nom d\'usage', v('i1_nom_usage')),
+    ri('Nom de naissance', v('i1_nom_naissance')),
+    ri('Prénom', v('i1_prenom')),
+    ri('Date de naissance', v('i1_ddn')),
+    ri('Ville / Pays naissance', (v('i1_ville_naissance') || '') + ' ' + (v('i1_pays_naissance') || '')),
+    ri('Nationalité', v('i1_nationalite')),
+    ri('E-mail', v('i1_email')),
+    ri('Tél. personnel', v('i1_tel_perso')),
+    ri('Tél. professionnel', v('i1_tel_pro')),
+    ri('Sexe', v('i1_sexe')),
+    ri('Taille / Poids', (v('i1_taille') || '—') + ' cm / ' + (v('i1_poids') || '—') + ' kg'),
+    ri('Fumeur', S.i1_fumeur || '—'),
+  ].join('');
+
+  document.getElementById('rc-famille').innerHTML = [
+    ri('Vit seul(e)', S.seul || '—'),
+    ri('Statut matrimonial', S.matrimonial || '—'),
+    ri('DDV réalisée', S.ddv || '—'),
+    ri('Adresse', [v('adresse_rue'), v('adresse_cp'), v('adresse_ville'), v('adresse_pays')].filter(Boolean).join(' ')),
+    ri('Enfants', S.has_enfants || '—'),
+    ri('Nombre d\'enfants', v('nb_enfants')),
+    ri('Enfants à charge', v('nb_enfants_charge')),
+    ri('Type d\'union', S.union_enfants || '—'),
+  ].join('');
+
+  if (S.seul !== 'oui') {
+    document.getElementById('rc-i2').innerHTML = [
+      ri('Nom', v('i2_nom_usage')),
+      ri('Prénom', v('i2_prenom')),
+      ri('Date de naissance', v('i2_ddn')),
+      ri('E-mail', v('i2_email')),
+      ri('Tél.', v('i2_tel_perso')),
+      ri('Taille / Poids', (v('i2_taille') || '—') + ' cm / ' + (v('i2_poids') || '—') + ' kg'),
+      ri('Fumeur', S.i2_fumeur || '—'),
+    ].join('');
+  }
+
+  document.getElementById('rc-profession').innerHTML = [
+    ri('Profession (Int.1)', v('i1_profession')),
+    ri('Employeur (Int.1)', v('i1_employeur')),
+    ri('Statut (Int.1)', S.i1_statut || '—'),
+    ri('Revenus mensuels (Int.1)', v('i1_rev_mensuel') ? v('i1_rev_mensuel') + ' €' : null),
+    ri('Revenus annuels (Int.1)', v('i1_rev_annuel') ? v('i1_rev_annuel') + ' €' : null),
+    ri('Primes (Int.1)', v('i1_primes') ? v('i1_primes') + ' €' : null),
+    ...(S.seul !== 'oui' ? [
+      ri('Profession (Int.2)', v('i2_profession')),
+      ri('Statut (Int.2)', S.i2_statut || '—'),
+      ri('Revenus mensuels (Int.2)', v('i2_rev_mensuel') ? v('i2_rev_mensuel') + ' €' : null),
+    ] : []),
+  ].join('');
+
+  document.getElementById('rc-charges').innerHTML = [
+    ri('Résidence', S.residence || '—'),
+    ri('Loyer mensuel', v('loyer_mensuel') ? v('loyer_mensuel') + ' €' : null),
+    ri('Déclaration fiscale', S.decl_type || '—'),
+    ri('Impôt (commun)', v('impot_commun') ? v('impot_commun') + ' €' : null),
+    ri('Impôt Int.1', v('impot_i1') ? v('impot_i1') + ' €' : null),
+    ri('Impôt Int.2', v('impot_i2') ? v('impot_i2') + ' €' : null),
+    ri('Prêt immo 1 — mensualité', v('immo_mens_1') ? v('immo_mens_1') + ' €' : null),
+    ri('Prêt immo 1 — CRD', v('immo_crd_1') ? v('immo_crd_1') + ' €' : null),
+    ri('Prêt immo 2 — mensualité', v('immo_mens_2') ? v('immo_mens_2') + ' €' : null),
+    ri('Autre charge 1', v('conso_mens_1') ? v('conso_mens_1') + ' €/mois' : null),
+  ].join('');
+}
+
+// ══════════════════════════════════════
+//  COLLECT DATA
+// ══════════════════════════════════════
+function collectData() {
+  const seul = S.seul === 'oui';
+  const nbChildren = Math.min(parseInt(document.getElementById('nb_enfants')?.value) || 0, 12);
+  const enfants = [];
+  for (let i = 1; i <= nbChildren; i++) {
+    enfants.push({ prenom: v('child_prenom_' + i), ddn: v('child_ddn_' + i), sexe: v('child_sexe_' + i) });
+  }
+
+  function loanBlock(prefix, n) {
+    const mens = v(prefix + '_mens_' + n);
+    if (!mens) return null;
+    return {
+      taux: v(prefix + '_taux_' + n),
+      mensualite: mens,
+      capital_restant_du: v(prefix + '_crd_' + n),
+      montant_initial: v(prefix + '_montant_' + n),
+      duree_ans: v(prefix + '_duree_' + n),
+      banque: v(prefix + '_banque_' + n),
+      ...(prefix === 'immo' ? { usage: v('immo_usage_' + n), ville: v('immo_ville_' + n) } : { objet: v('conso_objet_' + n) }),
+      date_fin: v(prefix + '_fin_' + n),
+    };
+  }
+
+  return {
+    meta: {
+      date_soumission: new Date().toISOString(),
+      source: 'Fiche Transmission Pôle Courtage — Solution Neuf',
+    },
+    interlocuteur1: {
+      vit_seul: S.seul,
+      nom_usage: v('i1_nom_usage'),
+      nom_naissance: v('i1_nom_naissance'),
+      prenom: v('i1_prenom'),
+      date_naissance: v('i1_ddn'),
+      ville_naissance: v('i1_ville_naissance'),
+      pays_naissance: v('i1_pays_naissance'),
+      nationalite: v('i1_nationalite'),
+      email: v('i1_email'),
+      tel_personnel: v('i1_tel_perso'),
+      tel_professionnel: v('i1_tel_pro'),
+      sexe: v('i1_sexe'),
+      taille_cm: v('i1_taille'),
+      poids_kg: v('i1_poids'),
+      fumeur: S.i1_fumeur,
+      handicap: S.i1_handicap,
+    },
+    situation_familiale: {
+      statut_matrimonial: S.matrimonial,
+      ddv_realisee: S.ddv,
+      ddv_date: v('ddv_date'),
+      ddv_lieu: v('ddv_lieu'),
+      adresse: v('adresse_rue'),
+      code_postal: v('adresse_cp'),
+      ville: v('adresse_ville'),
+      pays: v('adresse_pays'),
+      a_des_enfants: S.has_enfants,
+      nb_enfants: v('nb_enfants'),
+      nb_enfants_charge: v('nb_enfants_charge'),
+      union_enfants: S.union_enfants,
+      enfants,
+    },
+    interlocuteur2: seul ? null : {
+      nom_usage: v('i2_nom_usage'),
+      nom_naissance: v('i2_nom_naissance'),
+      prenom: v('i2_prenom'),
+      date_naissance: v('i2_ddn'),
+      ville_naissance: v('i2_ville_naissance'),
+      pays_naissance: v('i2_pays_naissance'),
+      nationalite: v('i2_nationalite'),
+      email: v('i2_email'),
+      tel_personnel: v('i2_tel_perso'),
+      tel_professionnel: v('i2_tel_pro'),
+      sexe: v('i2_sexe'),
+      taille_cm: v('i2_taille'),
+      poids_kg: v('i2_poids'),
+      fumeur: S.i2_fumeur,
+    },
+    profession: {
+      interlocuteur1: {
+        profession: v('i1_profession'),
+        employeur: v('i1_employeur'),
+        ville_travail: v('i1_ville_travail'),
+        cp_travail: v('i1_cp_travail'),
+        pays_travail: v('i1_pays_travail'),
+        expatrie_employeur_fr: S.i1_expatrie,
+        date_entree_entreprise: v('i1_date_entree'),
+        anciennete: v('i1_anciennete'),
+        statut_professionnel: S.i1_statut,
+        revenus_mensuels_nets: v('i1_rev_mensuel'),
+        revenus_annuels_nets: v('i1_rev_annuel'),
+        primes_annuelles: v('i1_primes'),
+        interessement_participation: v('i1_interessement'),
+        autres_ressources: {
+          bnc: v('i1_bnc'),
+          bic_reel: v('i1_bic_reel'),
+          bic_micro: v('i1_bic_micro'),
+          ba: v('i1_ba'),
+          foncier_type: S.i1_foncier_type,
+          foncier: v('i1_foncier'),
+          revenus_mobiliers: v('i1_mobilier'),
+          allocations_familiales: v('i1_alloc_fam'),
+          autres: v('i1_autres_res'),
+        },
+        notes_revenus: v('i1_rev_notes'),
+      },
+      interlocuteur2: seul ? null : {
+        profession: v('i2_profession'),
+        employeur: v('i2_employeur'),
+        ville_travail: v('i2_ville_travail'),
+        date_entree_entreprise: v('i2_date_entree'),
+        anciennete: v('i2_anciennete'),
+        statut_professionnel: S.i2_statut,
+        revenus_mensuels_nets: v('i2_rev_mensuel'),
+        revenus_annuels_nets: v('i2_rev_annuel'),
+        primes_annuelles: v('i2_primes'),
+        bnc_foncier: v('i2_bnc_foncier'),
+        autres_ressources: v('i2_autres'),
+      },
+    },
+    charges: {
+      residence: S.residence,
+      loyer_mensuel: v('loyer_mensuel'),
+      locataire_depuis: v('locataire_depuis'),
+      declaration_fiscale: S.decl_type,
+      impot_commun: v('impot_commun'),
+      impot_i1: v('impot_i1'),
+      impot_i2: v('impot_i2'),
+      prets_immobiliers: [1, 2, 3].map(n => loanBlock('immo', n)).filter(Boolean),
+      autres_charges: [1, 2, 3].map(n => loanBlock('conso', n)).filter(Boolean),
+    },
+  };
+}
+
+// ══════════════════════════════════════
+//  SUBMIT
+// ══════════════════════════════════════
+async function submitForm() {
+  const url = document.getElementById('webhook_url').value.trim();
+  const errEl = document.getElementById('error-banner');
+  const okEl = document.getElementById('success-banner');
+  errEl.classList.remove('show');
+  okEl.classList.remove('show');
+
+  if (!url) {
+    errEl.textContent = 'Veuillez renseigner l\'URL du webhook N8N avant d\'envoyer.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const payload = collectData();
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours...';
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (res.ok) {
+      okEl.classList.add('show');
+      btn.textContent = 'Envoyé ✓';
+    } else {
+      throw new Error('Erreur HTTP ' + res.status);
+    }
+  } catch (e) {
+    errEl.textContent = 'Impossible de contacter le webhook : ' + e.message;
+    errEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Réessayer →';
+  }
+}
+</script>
+</body>
+</html>
