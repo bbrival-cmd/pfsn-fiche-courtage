@@ -1381,7 +1381,7 @@
       <div class="card-label"><span class="card-label-icon">⚙️</span> Configuration</div>
       <div class="wh-config">
         <label>URL du webhook N8N</label>
-        <input type="url" class="wh-input" id="webhookUrl" placeholder="https://votre-instance.n8n.cloud/webhook/..." oninput="localStorage.setItem('pfsn_wh', this.value)">
+        <input type="url" class="wh-input" id="webhookUrl" placeholder="https://votre-instance.n8n.cloud/webhook/..." value="https://n8n.srv1404527.hstgr.cloud/webhook/pfsn-fiche-courtage-v2" oninput="localStorage.setItem('pfsn_wh', this.value)">
       </div>
     </div>
 
@@ -1511,8 +1511,15 @@ function getSteps() {
 //  INIT
 // ═══════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
+  const PROD_WH = 'https://n8n.srv1404527.hstgr.cloud/webhook/pfsn-fiche-courtage-v2';
   const savedWh = localStorage.getItem('pfsn_wh');
-  if (savedWh) document.getElementById('webhookUrl').value = savedWh;
+  // Ignore toute URL de test (webhook-test) — toujours utiliser la prod
+  if (savedWh && !savedWh.includes('webhook-test')) {
+    document.getElementById('webhookUrl').value = savedWh;
+  } else {
+    document.getElementById('webhookUrl').value = PROD_WH;
+    localStorage.setItem('pfsn_wh', PROD_WH);
+  }
   prefillFromUrl();
   calcPTZ(); // initialise PTZ + appelle calcLive()
   updateNav();
