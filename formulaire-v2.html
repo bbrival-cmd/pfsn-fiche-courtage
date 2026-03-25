@@ -44,62 +44,79 @@
 
     /* ═══ HEADER ═══ */
     .header {
-      background: linear-gradient(135deg, var(--navy) 0%, #1a3f70 100%);
+      background: linear-gradient(135deg, #0f2044 0%, var(--navy) 60%, #1a3f70 100%);
       position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 2px 20px rgba(28,50,91,0.35);
+      box-shadow: 0 4px 24px rgba(10,20,50,0.45);
     }
     .header-top {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 28px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 12px 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
     }
-    .header-logo { height: 38px; filter: brightness(0) invert(1); object-fit: contain; }
-    .header-badge {
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1px; color: rgba(255,255,255,0.5);
+    .header-left { display: flex; align-items: center; gap: 0; }
+    .header-logo-wrap {
+      background: white; border-radius: 8px;
+      padding: 5px 10px; display: flex; align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .header-logo { height: 32px; object-fit: contain; display: block; }
+    .header-divider {
+      width: 1px; height: 28px; background: rgba(255,255,255,0.15);
+      margin: 0 16px;
+    }
+    .header-title-block { display: flex; flex-direction: column; }
+    .header-title {
+      font-size: 13px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1.5px; color: white; line-height: 1;
+    }
+    .header-subtitle {
+      font-size: 10px; font-weight: 500; color: var(--cyan);
+      letter-spacing: 0.5px; margin-top: 3px; opacity: 0.9;
     }
     .header-save-btn {
-      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
-      color: rgba(255,255,255,0.85); padding: 6px 16px; border-radius: 20px;
-      font-size: 11px; font-weight: 600; font-family: 'Montserrat', sans-serif;
-      cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px;
+      background: rgba(42,171,227,0.15); border: 1px solid rgba(42,171,227,0.35);
+      color: rgba(255,255,255,0.9); padding: 7px 18px; border-radius: 20px;
+      font-size: 11px; font-weight: 700; font-family: 'Montserrat', sans-serif;
+      cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px;
+      display: flex; align-items: center; gap: 6px;
     }
-    .header-save-btn:hover { background: rgba(255,255,255,0.22); color: white; }
+    .header-save-btn:hover { background: rgba(42,171,227,0.28); color: white; border-color: var(--cyan); }
 
     /* ═══ STEPPER ═══ */
-    .stepper-wrapper { padding: 14px 28px 0; overflow-x: auto; scrollbar-width: none; }
+    .stepper-wrapper { padding: 10px 28px 0; overflow-x: auto; scrollbar-width: none; }
     .stepper-wrapper::-webkit-scrollbar { display: none; }
     .stepper {
       display: flex; align-items: center; min-width: max-content;
-      padding-bottom: 14px;
+      padding-bottom: 10px;
     }
-    .step-item { display: flex; align-items: center; flex-shrink: 0; cursor: pointer; }
+    .step-item { display: flex; align-items: center; flex-shrink: 0; cursor: pointer; gap: 9px; }
     .step-icon-wrap {
-      width: 34px; height: 34px; border-radius: 50%;
+      width: 32px; height: 32px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      border: 2px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.35); font-size: 15px;
-      transition: all 0.3s; position: relative;
+      border: 2px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.3); font-size: 14px;
+      transition: all 0.3s; flex-shrink: 0;
     }
     .step-item.active .step-icon-wrap {
       border-color: var(--cyan); background: var(--cyan);
-      color: white; box-shadow: 0 0 0 4px rgba(42,171,227,0.25);
+      color: white; box-shadow: 0 0 0 4px rgba(42,171,227,0.22);
     }
     .step-item.done .step-icon-wrap {
       border-color: var(--green); background: var(--green); color: white;
     }
-    .step-meta { margin-left: 8px; }
-    .step-num { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.35); }
-    .step-name { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.4); white-space: nowrap; transition: color 0.3s; }
-    .step-item.active .step-name { color: rgba(255,255,255,0.95); }
-    .step-item.done .step-name { color: rgba(16,185,129,0.9); }
-    .step-item.active .step-num, .step-item.done .step-num { color: rgba(255,255,255,0.6); }
-    .step-line { flex: 1; min-width: 28px; height: 2px; background: rgba(255,255,255,0.1); margin: 0 8px; border-radius: 1px; transition: background 0.4s; }
-    .step-line.done { background: var(--green); }
+    .step-meta { display: flex; flex-direction: column; }
+    .step-num { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.28); line-height: 1; }
+    .step-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.35); white-space: nowrap; transition: color 0.3s; margin-top: 2px; }
+    .step-item.active .step-name { color: white; }
+    .step-item.done .step-name { color: rgba(16,185,129,0.85); }
+    .step-item.active .step-num { color: rgba(255,255,255,0.55); }
+    .step-item.done .step-num { color: rgba(16,185,129,0.6); }
+    .step-line { flex: 1; min-width: 24px; height: 2px; background: rgba(255,255,255,0.08); margin: 0 6px; border-radius: 1px; transition: background 0.4s; }
+    .step-line.done { background: linear-gradient(90deg, var(--green), rgba(16,185,129,0.5)); }
 
     /* ═══ PROGRESS BAR ═══ */
-    .progress-track { height: 3px; background: rgba(255,255,255,0.08); }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), #5fd3f5); transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+    .progress-track { height: 3px; background: rgba(255,255,255,0.06); }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), #5fd3f5); transition: width 0.5s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 0 8px rgba(42,171,227,0.5); }
 
     /* ═══ CONTAINER ═══ */
     .container { max-width: 780px; margin: 0 auto; padding: 28px 16px 100px; }
@@ -432,10 +449,27 @@
 <!-- ═══ HEADER ═══ -->
 <header class="header">
   <div class="header-top">
-    <img class="header-logo" src="https://www.solution-neuf.fr/wp-content/uploads/sites/94/2024/01/Logo_classique_V3.png" alt="Solution Neuf" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span style="display:none;color:white;font-weight:800;font-size:15px;letter-spacing:1px;">SOLUTION NEUF</span>
-    <span class="header-badge">Fiche Financement</span>
-    <button class="header-save-btn" onclick="saveProgress()">💾 Sauvegarder</button>
+    <div class="header-left">
+      <div class="header-logo-wrap">
+        <svg width="110" height="32" viewBox="0 0 110 32" xmlns="http://www.w3.org/2000/svg">
+          <rect width="110" height="32" rx="5" fill="white"/>
+          <text x="6" y="13" font-family="Arial,sans-serif" font-size="7.5" font-weight="800" fill="#1c325b" letter-spacing="1.2">SOLUTION</text>
+          <text x="6" y="25" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#2aabe3" letter-spacing="0.5">NEUF</text>
+          <rect x="72" y="6" width="3" height="20" rx="1.5" fill="#2aabe3"/>
+          <text x="79" y="14" font-family="Arial,sans-serif" font-size="6" font-weight="700" fill="#1c325b">PÔLE</text>
+          <text x="79" y="23" font-family="Arial,sans-serif" font-size="6" font-weight="700" fill="#1c325b">COURTAGE</text>
+        </svg>
+      </div>
+      <div class="header-divider"></div>
+      <div class="header-title-block">
+        <div class="header-title">Fiche Financement</div>
+        <div class="header-subtitle">Pôle Courtage — Solution Neuf</div>
+      </div>
+    </div>
+    <button class="header-save-btn" onclick="saveProgress()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      Sauvegarder
+    </button>
   </div>
   <div class="stepper-wrapper">
     <div class="stepper" id="stepper">
@@ -1584,11 +1618,17 @@ function updateStepper() {
     el.classList.remove('active','done');
     if (s === currentStep) el.classList.add('active');
     else if (state.completedSteps.has(s)) el.classList.add('done');
-    // hide step 3 if skipped
+    // dim step 3 if skipped (keep visible but non-interactive)
     if (s===3) {
-      el.style.display = state.skipStep3 ? 'none' : 'flex';
-      document.getElementById('line-2-3').style.display = state.skipStep3 ? 'none' : 'block';
-      document.getElementById('line-3-4').style.display = state.skipStep3 ? 'none' : 'block';
+      if (state.skipStep3) {
+        el.style.opacity = '0.35';
+        el.style.pointerEvents = 'none';
+        el.style.filter = 'grayscale(1)';
+      } else {
+        el.style.opacity = '';
+        el.style.pointerEvents = '';
+        el.style.filter = '';
+      }
     }
   });
   // lines
@@ -2390,7 +2430,7 @@ function collectPayload() {
       cout_total_duree: Math.round(mensAssTotal * state.duree * 12),
     },
     ptz: ptz ? { eligible: true, montant: ptz.montant, quotite: ptz.quotite, tranche: ptz.tranche, zone: ptz.zone, differe_ans: ptz.differe, remboursement_ans: ptz.remb, mensualite: ptz.mensualite, rfr: ptz.rfr } : { eligible: false },
-    emprunteur1: { civilite: state.civ1, nom: getVal('nom1'), prenom: getVal('prenom1'), ddn: getVal('ddn1'), lieu_naissance: getVal('lieu_naissance1'), nationalite: getVal('nationalite1'), fumeur: state.fumeur1||'Non', telephone: getVal('tel1'), email: getVal('email1'), adresse: getVal('adresse1'), cp: getVal('cp1'), ville: getVal('ville1'), situation_familiale: state.sitFamiliale, nb_enfants: parseInt(getVal('nbEnfants1'))||0, dadv: state.dadv, statut_pro: state.statut1, profession: getVal('profession1'), secteur: getVal('secteur1'), employeur: getVal('employeur1'), anciennete: getVal('anciennete1'), revenus: { salaire: s1, foncier: f1, mobilier: m1, allocations: a1, autres: ar1, total: s1+f1+m1+a1+ar1 } },
+    emprunteur1: { civilite: state.civ1, nom: getVal('nom1'), prenom: getVal('prenom1'), ddn: getVal('ddn1'), lieu_naissance: getVal('lieu_naissance1'), nationalite: getVal('nationalite1'), fumeur: state.fumeur1||'Non', telephone: getVal('tel1'), email: getVal('email1'), adresse: getVal('adresse1'), cp: getVal('cp1'), ville: getVal('ville1'), situation_familiale: state.sitFamiliale, nb_enfants: parseInt(getVal('nbEnfants1'))||0, enfants_ages: Array.from({length:Math.min(parseInt(getVal('nbEnfants1'))||0,4)},(_,i)=>parseInt(getVal(`age_enfant_${i+1}`))||null).filter(a=>a!==null), dadv: state.dadv, statut_pro: state.statut1, profession: getVal('profession1'), secteur: getVal('secteur1'), employeur: getVal('employeur1'), anciennete: getVal('anciennete1'), revenus: { salaire: s1, foncier: f1, mobilier: m1, allocations: a1, autres: ar1, total: s1+f1+m1+a1+ar1 } },
     ...(!state.skipStep3 && { emprunteur2: { civilite: state.civ2, nom: getVal('nom2'), prenom: getVal('prenom2'), ddn: getVal('ddn2'), lieu_naissance: getVal('lieu_naissance2'), nationalite: getVal('nationalite2'), fumeur: state.fumeur2||'Non', telephone: getVal('tel2'), email: getVal('email2'), statut_pro: state.statut2, profession: getVal('profession2'), secteur: getVal('secteur2'), employeur: getVal('employeur2'), anciennete: getVal('anciennete2'), revenus: { salaire: s2, foncier: f2, mobilier: m2, allocations: a2, autres: ar2, total: s2+f2+m2+a2+ar2 } } }),
     charges: { loyer_brut: getNum('loyer'), loyer_dti: loyerDTI, loyer_exclus_dti: isPrimaire, charges_copro: getNum('charges_copro'), prets_immobiliers: pretImmo, prets_conso: pretConso, pension: getNum('pension'), autres: getNum('autres_charges'), regime_fiscal: getVal('regime_fiscal') },
     analyse: { revenus_total: revTotal, mensualite_principal: Math.round(mens), mensualite_ptz: mensPTZ, mensualite_assurance: mensAssTotal, mensualite_totale: mensualiteComplete, charges_existantes: chargesExist, taux_endettement: parseFloat(tde.toFixed(2)), reste_a_vivre: Math.round(revTotal - chargesExist - mensualiteComplete), cout_total_credit: coutTotalCredit },
